@@ -6,6 +6,7 @@ import matplotlib.dates as mdates
 import folium
 import streamlit as st
 from streamlit_folium import st_folium
+import os
 
 
 def add_aqi_bands(ax, pollutant):
@@ -31,9 +32,10 @@ if st.button("🔄 Refresh data"):
 
 
 # Load data
-conn = sqlite3.connect(r"C:\Users\shrn1\ML models practice\air_quality.db")
-df = pd.read_sql("SELECT * FROM air_quality.db", conn)
-conn.close()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "air_quality.db")
+
+conn = sqlite3.connect(DB_PATH)
 
 # Time handling
 df["datetime_utc"] = pd.to_datetime(df["datetime_utc"], utc=True)
@@ -191,4 +193,5 @@ padding: 12px;
 m.get_root().html.add_child(folium.Element(legend_html))
 
 st_folium(m, width=900, height=600)
+
 
