@@ -34,9 +34,9 @@ if st.button("🔄 Refresh data"):
 # Load data
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "air_quality.db")
-
 conn = sqlite3.connect(DB_PATH)
-
+df = pd.read_sql("SELECT * FROM air_quality", conn)
+conn.close()
 # Time handling
 df["datetime_utc"] = pd.to_datetime(df["datetime_utc"], utc=True)
 df["datetime_ist"] = df["datetime_utc"].dt.tz_convert("Asia/Kolkata")
@@ -193,5 +193,6 @@ padding: 12px;
 m.get_root().html.add_child(folium.Element(legend_html))
 
 st_folium(m, width=900, height=600)
+
 
 
